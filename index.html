@@ -3,166 +3,209 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Isometric Grid — Ch. 11</title>
+<title>Isometric Drawing — Grade 8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,800;9..40,900&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f4f2ec;--paper:#fff;--sand:#e8e4db;--ink:#1a1714;--rule:#ccc8be;
-  --display:'Archivo Black',Impact,sans-serif;
-  --mono:'DM Mono',monospace;--body:'DM Sans',sans-serif;
+  --bg1:#fddcb5;--bg2:#dff2e0;
+  --card:#fff;--border:#1a1a2e;
+  --ink:#1a1a2e;--ink2:#4a4a5a;--ink3:#9090a0;
+  --teal:#4ecdc4;--orange:#ff6b35;--yellow:#ffd93d;--red:#e63946;--purple:#a78bfa;--green:#2a9d8f;
+  --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;
 }
-html{background:var(--bg)}
-body{font-family:var(--body);background:var(--bg);color:var(--ink);min-height:100vh;
-  -webkit-font-smoothing:antialiased;padding:0}
+html{background:linear-gradient(135deg,var(--bg1) 0%,#fef6e8 50%,var(--bg2) 100%);min-height:100vh}
+body{font-family:var(--sans);color:var(--ink);min-height:100vh;padding:32px 24px;display:flex;flex-direction:column;align-items:center}
 
-/* MASTHEAD */
-.masthead{border-bottom:3px solid var(--ink);padding:16px 24px 12px;
-  display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:baseline}
-.m-tag{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;
-  text-transform:uppercase;opacity:.4;white-space:nowrap}
-.m-title{font-family:var(--display);font-size:clamp(22px,5.5vw,48px);line-height:.92;
-  text-align:center;letter-spacing:.02em}
-.m-right{font-family:var(--mono);font-size:10px;opacity:.4;text-align:right;white-space:nowrap}
-@media(max-width:480px){.masthead{grid-template-columns:1fr}.m-tag,.m-right{display:none}}
+/* PAGE CARD */
+.page-card{background:var(--card);border:2px solid var(--border);border-radius:24px;width:100%;max-width:960px;overflow:hidden}
 
-/* MODE TABS */
-.mode-bar{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;
-  border-bottom:2px solid var(--ink);scrollbar-width:none;background:var(--paper)}
-.mode-bar::-webkit-scrollbar{display:none}
-.mode-btn{padding:11px 18px;border:none;border-bottom:3px solid transparent;
-  background:transparent;font-family:var(--mono);font-size:11px;font-weight:600;
-  letter-spacing:.06em;text-transform:uppercase;color:var(--ink);opacity:.35;
-  cursor:pointer;white-space:nowrap;flex-shrink:0;margin-bottom:-2px;transition:all .15s;
-  -webkit-tap-highlight-color:transparent}
-.mode-btn.active{opacity:1;border-bottom-color:var(--ink)}
+/* HEADER */
+.card-header{padding:28px 36px 22px}
+.activity-pill{display:inline-flex;align-items:center;gap:6px;background:var(--yellow);border:2px solid var(--border);border-radius:30px;padding:4px 14px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.activity-pill::before{content:'★';font-size:10px}
+.page-title{font-size:clamp(24px,4vw,40px);font-weight:900;line-height:1.05;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.t-pill{color:#fff;border:2px solid var(--border);border-radius:12px;padding:3px 16px;font-style:italic;font-size:inherit;display:inline-block}
+.page-desc{font-size:15px;color:var(--ink2);line-height:1.6;max-width:600px}
+.page-desc em{color:var(--red);font-style:italic;font-weight:700}
 
-/* TOOLBAR */
-.toolbar-strip{padding:10px 24px;background:var(--paper);border-bottom:1px solid var(--rule);
-  display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.t-btn{padding:6px 13px;border:1.5px solid var(--rule);background:transparent;
-  font-family:var(--mono);font-size:11px;font-weight:600;text-transform:uppercase;
-  letter-spacing:.05em;color:var(--ink);opacity:.6;cursor:pointer;transition:all .12s;
-  -webkit-tap-highlight-color:transparent}
-.t-btn:hover{opacity:1;border-color:var(--ink)}
-.t-btn.active{background:var(--ink);color:#f4f2ec;border-color:var(--ink);opacity:1}
-.t-sep{width:1px;height:18px;background:var(--rule);flex-shrink:0}
+/* BODY LAYOUTS */
+.two-col{display:grid;grid-template-columns:1fr 280px;border-top:1px dashed #d0d0d8}
+.two-col-wide{display:grid;grid-template-columns:1fr 320px;border-top:1px dashed #d0d0d8}
+.one-col{border-top:1px dashed #d0d0d8}
+.left-col{padding:24px 28px;border-right:1px dashed #d0d0d8;display:flex;flex-direction:column;gap:20px}
+.right-col{padding:20px 18px;display:flex;flex-direction:column;gap:14px}
+.full-col{padding:24px 28px;display:flex;flex-direction:column;gap:20px}
 
-/* COLOR ROW */
-.color-strip{padding:10px 24px;background:var(--paper);border-bottom:1px solid var(--rule);
-  display:flex;gap:8px;align-items:center}
-.cs-lbl{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink);opacity:.4;flex-shrink:0}
-.cswatch{width:28px;height:28px;border-radius:2px;cursor:pointer;border:2px solid transparent;
-  transition:all .1s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
-.cswatch.active{border-color:var(--ink);box-shadow:0 0 0 2px rgba(26,24,20,.2)}
+/* SECTION LABELS */
+.sec{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sec-dot{width:13px;height:13px;border-radius:50%;flex-shrink:0}
+.sec-title{font-size:14px;font-weight:800;color:var(--ink)}
+.sec-rule{flex:1;border:none;border-top:1px dashed #d8d8e0}
 
-/* MAIN LAYOUT */
-.main-layout{display:grid;grid-template-columns:1fr 200px;border-bottom:1px solid var(--rule)}
-@media(max-width:600px){.main-layout{grid-template-columns:1fr}}
+/* INFO CARDS (right col) */
+.info-card{background:#fff;border:2px solid var(--border);border-radius:18px;padding:14px 16px}
+.info-card + .info-card{margin-top:0}
 
-/* CANVAS */
-.canvas-wrap{background:#1a1714;position:relative}
-canvas#iso-cvs{display:block;width:100%;touch-action:none;cursor:crosshair}
-.canvas-hint{padding:6px 12px;font-family:var(--mono);font-size:9px;font-weight:600;
-  letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);
-  text-align:center;background:#1a1714}
+/* CONTROLS — sliders */
+.ctrl-block{display:flex;flex-direction:column;gap:5px}
+.ctrl-head{display:flex;justify-content:space-between;align-items:baseline}
+.ctrl-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3)}
+.ctrl-val{font-family:var(--mono);font-size:24px;font-weight:700}
+input[type=range]{-webkit-appearance:none;width:100%;height:5px;border-radius:3px;background:#e8e8e8;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;cursor:pointer;border:2px solid var(--border)}
 
-/* TASK PANEL */
-.task-panel{border-left:1px solid var(--rule);padding:16px 16px;background:var(--paper);
-  display:flex;flex-direction:column;gap:10px}
-.tp-head{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink);opacity:.4}
-.tp-title{font-family:var(--display);font-size:18px;letter-spacing:.02em;line-height:1.1}
-.task-list{list-style:none;display:flex;flex-direction:column;gap:6px}
-.task-item{display:flex;align-items:flex-start;gap:7px;font-size:12.5px;color:var(--ink);
-  opacity:.6;line-height:1.4}
-.task-item.done{opacity:1;color:var(--ink)}
-.tick{width:16px;height:16px;border:1.5px solid var(--rule);border-radius:2px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;
-  margin-top:1px;background:var(--paper)}
-.task-item.done .tick{background:var(--ink);border-color:var(--ink);color:#f4f2ec}
-.tp-desc{font-size:11.5px;color:var(--ink);opacity:.45;line-height:1.6}
+/* TABS / SCENARIO BUTTONS */
+.tab-row{display:flex;gap:8px;flex-wrap:wrap;padding:16px 28px;border-bottom:1px dashed #d0d0d8;background:#fafafa}
+.tab-btn{padding:8px 18px;border:2px solid #d0d0d8;border-radius:30px;background:#fff;font-family:var(--sans);font-size:13px;font-weight:700;color:var(--ink2);cursor:pointer;transition:all .14s}
+.tab-btn:hover{border-color:var(--teal);color:var(--teal)}
+.tab-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+.tab-btn.active-orange{background:var(--orange);color:#fff;border-color:var(--orange)}
 
-/* PRESETS */
-.preset-bar{padding:8px 24px;background:var(--sand);border-bottom:1px solid var(--rule);
-  display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.pb-lbl{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink);opacity:.4;flex-shrink:0}
-.p-btn{padding:5px 12px;border:1.5px solid var(--rule);background:var(--paper);
-  font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink);opacity:.6;
-  cursor:pointer;transition:all .12s;-webkit-tap-highlight-color:transparent}
-.p-btn:hover{opacity:1;border-color:var(--ink)}
+/* STEP NAV */
+.step-nav{display:flex;align-items:center;gap:12px;padding:14px 28px;border-bottom:1px dashed #d0d0d8;background:#fafafa}
+.step-btn{padding:8px 20px;border:2px solid var(--border);border-radius:30px;font-family:var(--sans);font-size:13px;font-weight:800;cursor:pointer;background:#fff;color:var(--ink2);transition:all .14s}
+.step-btn:hover:not(:disabled){background:#f5f5f5}
+.step-btn:disabled{opacity:.35;cursor:default}
+.step-btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.step-btn.primary:hover{background:#3ab5ac}
+.step-dots{display:flex;gap:6px}
+.sdot{width:9px;height:9px;border-radius:50%;background:#d8d8e0;transition:all .15s}
+.sdot.done{background:var(--teal)}
+.sdot.cur{background:var(--teal);transform:scale(1.3)}
+.step-lbl{flex:1;font-size:14px;font-weight:700;color:var(--ink)}
 
-/* INSIGHT */
-.insight-row{padding:16px 24px;display:grid;grid-template-columns:3px 1fr;gap:14px}
-.ins-bar{background:var(--ink)}
-.ins-text{font-size:13px;line-height:1.75;color:var(--ink);opacity:.7}
-.ins-text strong{opacity:1}
+/* STEP BANNER */
+.step-banner{padding:14px 28px;background:#fffbe6;border-bottom:1px dashed #d0d0d8;display:flex;align-items:baseline;gap:10px}
+.step-num{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--orange);flex-shrink:0}
+.step-text{font-size:15px;font-weight:700;color:var(--ink);line-height:1.4}
+
+/* CANVAS AREA */
+.canvas-wrap{background:#f4f8ff;border-radius:0;overflow:hidden;position:relative}
+canvas{display:block;width:100%;height:auto}
+
+/* FACT / STATS ROWS */
+.fact-row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px dashed #e8e8e8}
+.fact-row:last-child{border-bottom:none}
+.fact-lbl{font-size:13px;color:var(--ink2)}
+.fact-val{font-family:var(--mono);font-size:16px;font-weight:700}
+
+/* TALLY BUTTONS */
+.tally{display:flex;align-items:center;gap:8px}
+.tally-btn{width:36px;height:36px;border:2px solid var(--border);border-radius:10px;background:#fff;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;color:var(--ink2)}
+.tally-btn:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+.tally-num{font-family:var(--mono);font-size:28px;font-weight:700;min-width:40px;text-align:center}
+
+/* VERDICT STRIP */
+.verdict-strip{padding:14px 28px;font-size:15px;font-weight:700;border-top:1px dashed #d0d0d8}
+.verdict-ok{background:#e8faf9;color:var(--green)}
+.verdict-fail{background:#fef0ee;color:#c0441e}
+
+/* INSIGHT STRIP */
+.insight-strip{padding:16px 28px;font-size:14px;color:var(--ink2);line-height:1.7;background:#fffbe6;border-top:1px dashed #d0d0d8}
+.insight-strip strong{color:var(--ink);font-weight:700}
+
+/* NUMBER CIRCLES */
+.num-circle{width:26px;height:26px;border-radius:50%;background:var(--yellow);border:2px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+
+/* FLOATING SHAPES */
+.shape{position:fixed;pointer-events:none;z-index:-1}
+.sh-circle{width:56px;height:56px;border-radius:50%;background:#ff6b6b;opacity:.65;top:80px;left:calc(50% - 530px)}
+.sh-tri{width:0;height:0;border-left:22px solid transparent;border-right:22px solid transparent;border-bottom:38px solid #4ecdc4;opacity:.65;bottom:180px;right:calc(50% - 530px)}
+.sh-star{font-size:34px;line-height:1;opacity:.55;top:200px;right:calc(50% - 510px)}
+.sh-sq{width:36px;height:36px;border-radius:8px;background:#a78bfa;opacity:.55;bottom:90px;left:calc(50% - 510px);transform:rotate(15deg)}
+
+@media(max-width:740px){
+  body{padding:12px}
+  .two-col,.two-col-wide{grid-template-columns:1fr}
+  .left-col{border-right:none;border-bottom:1px dashed #d0d0d8}
+  .card-header,.full-col,.left-col,.right-col{padding-left:18px;padding-right:18px}
+  .tab-row,.step-nav,.step-banner,.verdict-strip,.insight-strip{padding-left:18px;padding-right:18px}
+}
+.page-card{max-width:960px}
+
+/* TASK CHECKLIST */
+.task-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:1.5px solid #e0e0e0;font-size:13px;color:var(--ink2);background:#fff;list-style:none}
+.task-item.done{background:#e8faf9;border-color:var(--teal);color:var(--teal)}
+.tick{width:18px;height:18px;border-radius:50%;border:2px solid #d0d0d8;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px}
+.task-item.done .tick{background:var(--teal);border-color:var(--teal);color:#fff}
+.task-item.done .tick::after{content:'✓'}
+
 </style>
 </head>
 <body>
-
-<div class="masthead">
-  <div class="m-tag">Ch. 11 · 3D Shapes &amp; Nets</div>
-  <div class="m-title">Isometric Grid</div>
-  <div class="m-right">Grade 8 · Oxford / Bhanzu</div>
-</div>
-
-<div class="mode-bar">
-  <button class="mode-btn active" data-m="free">Free build</button>
-  <button class="mode-btn" data-m="room">Task: Room</button>
-  <button class="mode-btn" data-m="stair">Task: Staircase</button>
-</div>
-
-<div id="preset-bar" class="preset-bar">
-  <span class="pb-lbl">Preset</span>
-  <button class="p-btn" id="ps1">1 cube</button>
-  <button class="p-btn" id="ps2">2×2×2</button>
-  <button class="p-btn" id="ps3">Row of 4</button>
-  <button class="p-btn" id="ps4">L-shape</button>
-  <button class="p-btn" id="ps-clear">Clear</button>
-</div>
-
-<div class="toolbar-strip">
-  <button class="t-btn active" id="t-cube">Place</button>
-  <button class="t-btn" id="t-erase">Erase</button>
-  <div class="t-sep"></div>
-  <button class="t-btn" id="t-undo">Undo</button>
-  <button class="t-btn" id="t-clear">Clear all</button>
-</div>
-
-<div class="color-strip">
-  <span class="cs-lbl">Colour</span>
-  <div class="cswatch active" style="background:#1650a8" data-c="blue"></div>
-  <div class="cswatch" style="background:#b83020" data-c="red"></div>
-  <div class="cswatch" style="background:#1a6e42" data-c="green"></div>
-  <div class="cswatch" style="background:#c47a0a" data-c="orange"></div>
-  <div class="cswatch" style="background:#7a4ab0" data-c="purple"></div>
-  <div class="cswatch" style="background:#5a5650" data-c="grey"></div>
-</div>
-
-<div class="main-layout">
-  <div class="canvas-wrap">
-    <canvas id="iso-cvs"></canvas>
-    <div class="canvas-hint">tap or drag to place cubes · vertical = height · right = length · left = depth</div>
+<div class="shape sh-circle"></div>
+<div class="shape sh-tri"></div>
+<div class="shape sh-star">★</div>
+<div class="shape sh-sq"></div>
+<div class="page-card">
+  <div class="card-header">
+    <div class="activity-pill">Ch 11 · 3D Shapes & Nets</div>
+    <div class="page-title">Isometric <span class="t-pill" style="background:var(--purple)">Drawing</span></div>
+    <p class="page-desc">Click the grid to place coloured cubes. Try the task modes to recreate given structures. <em>Each cube takes up the same space on the isometric grid.</em></p>
   </div>
-  <div class="task-panel" id="task-panel">
-    <div class="tp-head">Mode</div>
-    <div class="tp-title" id="tp-title">Free build</div>
-    <ul class="task-list" id="task-list"></ul>
-    <p class="tp-desc" id="tp-desc">Build anything you like.</p>
+
+  <!-- MODE TABS -->
+  <div class="tab-row">
+    <button class="mode-btn tab-btn active" data-m="free">Free build</button>
+    <button class="mode-btn tab-btn" data-m="room">Task: Room</button>
+    <button class="mode-btn tab-btn" data-m="stair">Task: Staircase</button>
   </div>
-</div>
 
-<div class="insight-row">
-  <div class="ins-bar"></div>
-  <p class="ins-text">Isometric drawing shows three dimensions on a flat surface — the three axes run at 120° to each other. <strong>Engineering drawings</strong> use this technique so you can see height, length, and depth in a single view without perspective distortion.</p>
-</div>
+  <!-- TASK INFO -->
+  <div id="preset-bar" style="padding:12px 28px;border-bottom:1px dashed #d0d0d8;background:#fafafa;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <span style="font-size:13px;font-weight:700;color:var(--ink2)" id="tp-title">Free build mode</span>
+    <span style="font-size:13px;color:var(--ink3)" id="tp-desc">Click on the isometric grid to add cubes.</span>
+  </div>
 
+  <div class="two-col-wide" style="min-height:440px">
+    <div class="left-col" style="padding:0;background:#f4f8ff">
+      <!-- TOOLS -->
+      <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px dashed #d0d0d8;background:#fff;flex-wrap:wrap">
+        <button class="tab-btn" id="t-cube" style="background:var(--teal);color:#fff;border-color:var(--teal)">+ Cube</button>
+        <button class="tab-btn" id="t-erase">✕ Erase</button>
+        <button class="tab-btn" id="t-undo">↩ Undo</button>
+        <button class="tab-btn" id="ps-clear" style="margin-left:auto;color:var(--red);border-color:var(--red)">Clear all</button>
+      </div>
+      <!-- COLOURS -->
+      <div style="display:flex;gap:6px;padding:8px 14px;border-bottom:1px dashed #d0d0d8;background:#fff;flex-wrap:wrap;align-items:center">
+        <span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3)">Colour:</span>
+        <div class="cswatch" style="width:24px;height:24px;border-radius:6px;background:#4ecdc4;border:2px solid #1a1a2e;cursor:pointer" data-c="#4ecdc4"></div>
+        <div class="cswatch" style="width:24px;height:24px;border-radius:6px;background:#ff6b35;border:2px solid #e0e0e0;cursor:pointer" data-c="#ff6b35"></div>
+        <div class="cswatch" style="width:24px;height:24px;border-radius:6px;background:#ffd93d;border:2px solid #e0e0e0;cursor:pointer" data-c="#ffd93d"></div>
+        <div class="cswatch" style="width:24px;height:24px;border-radius:6px;background:#a78bfa;border:2px solid #e0e0e0;cursor:pointer" data-c="#a78bfa"></div>
+        <div class="cswatch" style="width:24px;height:24px;border-radius:6px;background:#e63946;border:2px solid #e0e0e0;cursor:pointer" data-c="#e63946"></div>
+        <div class="cswatch" style="width:24px;height:24px;border-radius:6px;background:#2a9d8f;border:2px solid #e0e0e0;cursor:pointer" data-c="#2a9d8f"></div>
+      </div>
+      <!-- PRESETS -->
+      <div style="display:flex;gap:6px;padding:8px 14px;border-bottom:1px dashed #d0d0d8;background:#fff;flex-wrap:wrap;align-items:center">
+        <span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3)">Preset:</span>
+        <button class="tab-btn" id="ps1" style="font-size:12px;padding:4px 12px">1 cube</button>
+        <button class="tab-btn" id="ps2" style="font-size:12px;padding:4px 12px">2×2×2</button>
+        <button class="tab-btn" id="ps3" style="font-size:12px;padding:4px 12px">L-shape</button>
+        <button class="tab-btn" id="ps4" style="font-size:12px;padding:4px 12px">Staircase</button>
+      </div>
+      <!-- CANVAS -->
+      <canvas id="iso-cvs" style="display:block;width:100%;cursor:crosshair"></canvas>
+      <div style="text-align:center;padding:6px;font-size:12px;color:var(--ink3)">Click to add cubes · Erase mode to remove</div>
+    </div>
+
+    <div class="right-col">
+      <div class="sec"><div class="sec-dot" style="background:var(--purple)"></div><span class="sec-title">Task checklist</span><hr class="sec-rule"></div>
+      <div id="task-list" style="display:flex;flex-direction:column;gap:6px"></div>
+      <button class="tab-btn" id="t-clear" style="margin-top:10px;color:var(--red);border-color:var(--red)">Clear task</button>
+      <div class="info-card" style="margin-top:12px;padding:12px 14px">
+        <p style="font-size:13px;color:var(--ink2);line-height:1.6">
+          <strong>Isometric drawing</strong> shows 3D objects on a 2D grid of 60° angles — every cube looks the same size regardless of depth, making it easy to count and compare.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
 <script>
+
 const COLORS={
   blue:  {top:'#1a5dbf',left:'#0e3a80',right:'#1448a0'},
   red:   {top:'#d44040',left:'#8a2020',right:'#b83030'},
@@ -404,6 +447,7 @@ function resize(){
 }
 window.addEventListener('resize',resize);
 renderChecklist();resize();
+
 </script>
 </body>
 </html>
